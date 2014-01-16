@@ -218,24 +218,23 @@ void setup()
   // initDDS();
   Serial.println("Enter Call Sign (will take 6 characters only & does not validate call)");
   starttimer();
-  char incomingbyte[]{
-    0x20,0x20,0x20,0x20,0x20,0x20  };
+  char incomingbyte[]{0x20,0x20,0x20,0x20,0x20,0x20};
   byte inputcnt=0;
 
   while(timerstarted){
     if(Serial.available()>0){
       incomingbyte[inputcnt]=Serial.read();
-
+      
       if((incomingbyte[inputcnt]==0x0D)||(inputcnt==5)){
         for(int i=0;i<6;i++){
-          EEPROM.write(i, incomingbyte[i]);
+               EEPROM.write(i, incomingbyte[i]);
         }       
         Serial.println("Callsign stored ");       
         stoptimer();
         break;            
       }
-      inputcnt++;
-
+        inputcnt++;
+      
     }
   }
   String callsignin="VK3TBC";
@@ -245,9 +244,9 @@ void setup()
     //Serial.print(EEPROM.read(i));
     callsignin[i]=(char)EEPROM.read(i);
   }
-  Serial.println(callsignin);
-  callsign  = new char[callsignin.length() + 1];
-  strcpy( callsign , callsignin.c_str()); 
+   Serial.println(callsignin);
+   callsign  = new char[callsignin.length() + 1];
+   strcpy( callsign , callsignin.c_str()); 
 }
 
 void loop()
@@ -266,15 +265,10 @@ void loop()
   while(send_buffer.getSize()!=0){
     ;
   }
-  sendAPRSframe();
-  while(send_buffer.getSize()!=0){
-    ;
-  }
   baud_mode++;
   if(baud_mode==3){
     baud_mode=0;
   }
- 
   /* if(baud4800on){
    baud4800on=false;
    }else{
@@ -345,10 +339,7 @@ void sendTelemetry(){
   encode_rs_8(&testStr[0], &testStr[223], 0);
   // sendbitdata(flags,sizeof(flags));
 
-  if(baud_mode==2){
-    sendbitdata(flags,70);
-  }
-  else if(baud_mode==1){
+  if(baud_mode>0){
     sendbitdata(flags,50);
   }
   else{//Preamble /20
@@ -797,7 +788,6 @@ void initSPI(){
 void initSPI1(){
 
 }
-
 
 
 
