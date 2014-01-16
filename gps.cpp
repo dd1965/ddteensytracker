@@ -21,14 +21,26 @@ String getlong(){
   sprintf(buf,"%+09.4f",longitude);
   return buf;
 }
+double getlongd(){
+ 
+  return longitude;
+}
 String getlat(){
   sprintf(buf,"%+08.4f",latitude);
   return buf;
+}
+double getlatd(){
+ 
+  return latitude;
 }
 String getalt(){
   sprintf(buf,"%05.0f",alt);
   Serial.println(alt);
   return buf;
+}
+double getaltd(){
+  
+  return alt;
 }
 String getgpsTime(){
   String gpstime;
@@ -36,6 +48,17 @@ String getgpsTime(){
   sprintf(buf,"%02d:",time_hour);
   gpstime=buf;
   sprintf(buf,"%02d:",time_minute);
+  gpstime=gpstime+buf;
+  sprintf(buf,"%02d",time_sec);
+  gpstime=gpstime+buf;
+  return gpstime;
+}
+String getgpsTimeAPRS(){
+  String gpstime;
+
+  sprintf(buf,"%02d",time_hour);
+  gpstime=buf;
+  sprintf(buf,"%02d",time_minute);
   gpstime=gpstime+buf;
   sprintf(buf,"%02d",time_sec);
   gpstime=gpstime+buf;
