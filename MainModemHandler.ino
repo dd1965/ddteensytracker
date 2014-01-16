@@ -218,23 +218,24 @@ void setup()
   // initDDS();
   Serial.println("Enter Call Sign (will take 6 characters only & does not validate call)");
   starttimer();
-  char incomingbyte[]{0x20,0x20,0x20,0x20,0x20,0x20};
+  char incomingbyte[]{
+    0x20,0x20,0x20,0x20,0x20,0x20    };
   byte inputcnt=0;
 
   while(timerstarted){
     if(Serial.available()>0){
       incomingbyte[inputcnt]=Serial.read();
-      
+
       if((incomingbyte[inputcnt]==0x0D)||(inputcnt==5)){
         for(int i=0;i<6;i++){
-               EEPROM.write(i, incomingbyte[i]);
+          EEPROM.write(i, incomingbyte[i]);
         }       
         Serial.println("Callsign stored ");       
         stoptimer();
         break;            
       }
-        inputcnt++;
-      
+      inputcnt++;
+
     }
   }
   String callsignin="VK3TBC";
@@ -244,9 +245,9 @@ void setup()
     //Serial.print(EEPROM.read(i));
     callsignin[i]=(char)EEPROM.read(i);
   }
-   Serial.println(callsignin);
-   callsign  = new char[callsignin.length() + 1];
-   strcpy( callsign , callsignin.c_str()); 
+  Serial.println(callsignin);
+  callsign  = new char[callsignin.length() + 1];
+  strcpy( callsign , callsignin.c_str()); 
 }
 
 void loop()
@@ -254,6 +255,7 @@ void loop()
   //baud4800on=true;
   if(!send_morse) {  
     getTemperature();
+    voltage=getVoltage();
     send_morse=true;          
   }
   // send_morse=true;
@@ -263,6 +265,12 @@ void loop()
   // transmiton=0; 
   encodeImage(seqimg,callsign);
   while(send_buffer.getSize()!=0){
+    ;
+  }
+  sendAPRSframe();
+
+  while(send_buffer.getSize()!=0){
+
     ;
   }
   baud_mode++;
@@ -286,7 +294,7 @@ void sendTelemetry(){
   //sensors.requestTemperatures();
   // getTemperature();
   // Serial.println(tempout);
-  voltage=getVoltage();
+  //  voltage=getVoltage();
   // getGPSdata();
   starttimer();
   while(!getGPSdata()&&timerstarted);//||getage()!="1");//Wait for GPS data & add timer elapesed here.  
@@ -788,6 +796,8 @@ void initSPI(){
 void initSPI1(){
 
 }
+
+
 
 
 
